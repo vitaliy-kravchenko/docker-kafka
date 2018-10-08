@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  kafka_zookeeper:
+    build: ./
+    ports:
+      - 2181:2181
+    restart: always
+    environment:
+      ZOOKEEPER_SERVER: kafka_zookeeper:2888:3888
+      ZOOKEEPER_ID: 1
+  kafka_broker:
+    hostname: kafka_broker
+    build: ./
+    ports:
+      - 9092:9092
+    restart: always
+    environment:
+      BROKER_ID: 1
+      KAFKA_PORT: 9092
+      ZOOKEEPER_SERVER: kafka_zookeeper:2181
+      KAFKA_CREATE_TOPICS: "topic_one:1:1,topic_two:1:1"
+    command: ["broker"]
